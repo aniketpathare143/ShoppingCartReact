@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.left-aligned-container {
+  float: left;
+}
+
+
+/* Style for left-aligned label */
+.left-aligned-label {
+  text-align: left;
+}
+
+.right-aligned-label {
+  text-align: right;
+  margin-left: 50%;
+}
+
+.page-login{
+  margin-top: 3%;
+}
