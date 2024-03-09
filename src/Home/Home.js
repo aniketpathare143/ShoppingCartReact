@@ -3,19 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { Menu, Button, Sidebar, Segment } from 'semantic-ui-react';
 import LoginComponent from '../Login/Login';
 import Registration from '../Login/Registration';
+import Category from '../ShoppingCart/Category';
+import Product from '../ShoppingCart/Product';
 
 const HomeComponent = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
     const [username, setUsername] = useState('');
+    const [categoryId, setCategoryId] = useState('');
+    let isCatClicked;
+    const [categoryClicked, setCategoryClicked] = useState(false);
 
     const navigate = useNavigate();
 
     const [showLoginComponent, setShowLoginComponent] = useState(false);
 
     const handleLogout = () => {
-        setIsLoggedIn(false);    
+        setIsLoggedIn(false);
         setIsSignUp(false);
     }
 
@@ -36,6 +41,14 @@ const HomeComponent = () => {
         setIsSignUp(true);
     };
 
+
+    const handleSetCategory = (categoryId, categoryClicked) => {
+        console.log("In home:" + categoryClicked, categoryId);
+        setCategoryId(categoryId);       
+        //categoryClicked=true; 
+        setCategoryClicked(true);
+    };
+
     const handleRegistration = (registrationData) => {
         // Assuming registration logic here
         // For simplicity, just logging the registration data
@@ -43,7 +56,7 @@ const HomeComponent = () => {
         setIsLoggedIn(true);
         setUsername(registrationData.email); // Assuming email as username for simplicity
     };
-
+    
     return (
         <div>
             <Sidebar.Pushable as={Segment}>
@@ -72,17 +85,24 @@ const HomeComponent = () => {
                     </Segment>
                 </Sidebar.Pusher>
             </Sidebar.Pushable>
-            {
-                isLoggedIn ? null : (
-                    isSignUp ? (
-                        <Registration onRegistration={handleRegistration} />
-                    ) : (
-                        <LoginComponent onLogin={handleLogin} onSignUp={handleSignUp} />
+            <div style={{ display: 'flex' }}>
+                {
+                    isLoggedIn ? <Category onSet={handleSetCategory} /> : (
+                        isSignUp ? (
+                            <Registration onRegistration={handleRegistration} />
+                        ) : (
+                            <LoginComponent onLogin={handleLogin} onSignUp={handleSignUp} />
+                        )
                     )
-                )
-            }
+                }                
+                {
+                    isLoggedIn && categoryClicked ?
+                        <div style={{ marginLeft: '20px' }}>
+                            <Product catId={categoryId} />
+                        </div> : null
+                }
+            </div>
         </div>
-
     );
 };
 

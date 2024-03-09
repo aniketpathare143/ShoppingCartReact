@@ -69,7 +69,7 @@ const Registration = ({ onRegistration }) => {
     };
 
     return (
-        <div>
+        <div className='page-registration'>
             <br></br>
             <div class="ui container">
                 <h2 class="left-aligned-label" >

@@ -29,4 +29,19 @@ code {
 
 .page-login{
   margin-top: 3%;
+  margin-left: 13%;
+}
+
+.page-registration{
+  
+  margin-left: 13%;
+}
+
+.grid{
+  margin-left: 50%;
+}
+
+.showPosition
+{
+  display: inline-block;
 }
