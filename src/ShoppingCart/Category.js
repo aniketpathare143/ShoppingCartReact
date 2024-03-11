@@ -9,8 +9,7 @@ const Category = (props) => {
     const [categoryClicked, setCategoryClicked] = useState(false);
     //props.onSet(33);
 
-    const handleCategoryClick = (e) => {
-        console.log("e value:" + e)
+    const handleCategoryClick = (e) => {       
         setCategoryClicked(true);
         props.onSet(e, categoryClicked);
     };
@@ -21,7 +20,7 @@ const Category = (props) => {
             try {
                 const response = await axios.get('http://localhost:5087/api/category');
                 setCategory(response.data);
-                console.log(response.data);
+                //console.log(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

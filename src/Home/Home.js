@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Menu, Button, Sidebar, Segment } from 'semantic-ui-react';
 import LoginComponent from '../Login/Login';
 import Registration from '../Login/Registration';
 import Category from '../ShoppingCart/Category';
 import Product from '../ShoppingCart/Product';
+import Cart from '../ShoppingCart/Cart';
+import { useProductContext } from '../Store/ProductContext';
 
 const HomeComponent = () => {
 
@@ -12,16 +13,18 @@ const HomeComponent = () => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [username, setUsername] = useState('');
     const [categoryId, setCategoryId] = useState('');
-    let isCatClicked;
     const [categoryClicked, setCategoryClicked] = useState(false);
+    const [buttonCartClicked, setButtonCartClicked] = useState(false);
+    const [buttonGoBackClicked, setButtonGoBackClicked] = useState(false);
 
-    const navigate = useNavigate();
-
-    const [showLoginComponent, setShowLoginComponent] = useState(false);
+    const { clearProductCounts } = useProductContext();
 
     const handleLogout = () => {
+        clearProductCounts();
         setIsLoggedIn(false);
         setIsSignUp(false);
+        setButtonCartClicked(false);
+        setButtonGoBackClicked(false);
     }
 
     const handleLogin = (loginData) => {
@@ -41,22 +44,29 @@ const HomeComponent = () => {
         setIsSignUp(true);
     };
 
+    const handleCartClick = () => { setButtonGoBackClicked(false); }
+    const handleBackButtonClick = () => { }
+
 
     const handleSetCategory = (categoryId, categoryClicked) => {
-        console.log("In home:" + categoryClicked, categoryId);
-        setCategoryId(categoryId);       
+        //console.log("In home:" + categoryClicked, categoryId);
+        setCategoryId(categoryId);
         //categoryClicked=true; 
         setCategoryClicked(true);
+        //setButtonGoBackClicked(false);
     };
 
     const handleRegistration = (registrationData) => {
         // Assuming registration logic here
         // For simplicity, just logging the registration data
-        console.log('Registration data:', registrationData);
+        //console.log('Registration data:', registrationData);
         setIsLoggedIn(true);
         setUsername(registrationData.email); // Assuming email as username for simplicity
     };
-    
+
+    // console.log("isLoggedIn, buttonCartClicked,categoryClicked,buttonGoBackClicked:"+
+    // isLoggedIn,buttonCartClicked,categoryClicked,buttonGoBackClicked);
+
     return (
         <div>
             <Sidebar.Pushable as={Segment}>
@@ -86,20 +96,36 @@ const HomeComponent = () => {
                 </Sidebar.Pusher>
             </Sidebar.Pushable>
             <div style={{ display: 'flex' }}>
+
                 {
-                    isLoggedIn ? <Category onSet={handleSetCategory} /> : (
-                        isSignUp ? (
-                            <Registration onRegistration={handleRegistration} />
-                        ) : (
-                            <LoginComponent onLogin={handleLogin} onSignUp={handleSignUp} />
+                    isLoggedIn && !buttonCartClicked ?
+                        <Category onSet={handleSetCategory} /> : (
+                            isSignUp ? (
+                                <Registration onRegistration={handleRegistration} />
+                            ) : (
+                                !buttonCartClicked &&
+                                <LoginComponent onLogin={handleLogin} onSignUp={handleSignUp} />
+                            )
                         )
-                    )
-                }                
+                }
                 {
-                    isLoggedIn && categoryClicked ?
+                    isLoggedIn && categoryClicked && !buttonCartClicked ?
                         <div style={{ marginLeft: '20px' }}>
-                            <Product catId={categoryId} />
+
+                            <Product catId={categoryId} handleClick={handleCartClick} setButtonClicked={setButtonCartClicked} />
+
                         </div> : null
+                }
+                {
+                    isLoggedIn && buttonCartClicked && categoryClicked && !buttonGoBackClicked ?
+                        <Cart handleBackClick={handleBackButtonClick} setButtonGoBackClicked={setButtonGoBackClicked} />
+                         : null
+                }
+                {
+                    isLoggedIn && buttonGoBackClicked ?
+                        <>  <Category onSet={handleSetCategory} />
+                            <Product catId={categoryId} handleClick={handleCartClick} setButtonClicked={setButtonCartClicked} />
+                        </> : null
                 }
             </div>
         </div>

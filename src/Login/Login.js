@@ -12,7 +12,7 @@ const LoginComponent = ({ onLogin, onSignUp }) => {
         const fetchData = async () => {
             try {
                 setCorrect(true);
-                console.log("correct");
+                //console.log("correct");
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -22,7 +22,7 @@ const LoginComponent = ({ onLogin, onSignUp }) => {
     }, [correct]);
 
     const handleLogin = () => {
-        console.log("u:" + loginData.email + "p:" + loginData.password);
+       // console.log("u:" + loginData.email + "p:" + loginData.password);
         // Assuming validation and authentication logic here
         // For simplicity, just passing loginData to the onLogin function
         // setLoading(true);

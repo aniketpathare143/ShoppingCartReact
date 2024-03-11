@@ -62,7 +62,7 @@ const Registration = ({ onRegistration }) => {
                 // Handle error here
             }
             setIsSubmitted(true);
-            console.log('Form submitted:', formData);
+            //console.log('Form submitted:', formData);
             onRegistration(formData);
             //navigate('/SuccessForm')
         }
