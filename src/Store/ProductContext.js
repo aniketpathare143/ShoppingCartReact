@@ -1,4 +1,3 @@
-// ProductContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 const ProductContext = createContext();
@@ -6,6 +5,16 @@ const ProductContext = createContext();
 export const ProductProvider = ({ children }) => {
     const [productCounts, setProductCounts] = useState({});
     const [products, setProducts] = useState([]);
+    const [showProduct, setShowProducts] = useState(false);
+    const [categoryId, setCategoryId] = useState('');
+
+    const setShowProductFun = () => {
+        setShowProducts(true);
+    };
+
+    const clearShowProductFun = () => {
+        setShowProducts(false);
+    };
 
     const incrementCount = (productId) => {
         console.log("Product Id:" + productId)
@@ -33,7 +42,11 @@ export const ProductProvider = ({ children }) => {
     };
 
     return (
-        <ProductContext.Provider value={{ productCounts, incrementCount, decrementCount, clearProductCounts, setProductsInContext,products }}>
+        <ProductContext.Provider value={{
+            productCounts, incrementCount, decrementCount, clearProductCounts,
+            setProductsInContext, products,
+            showProduct, setShowProductFun, clearShowProductFun, categoryId, setCategoryId
+        }}>
             {children}
         </ProductContext.Provider>
     );

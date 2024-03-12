@@ -1,26 +1,32 @@
 import './App.css';
 import HomeComponent from './Home/Home';
+import NavigationBar from './Home/Navbar';
 import LoginComponent from './Login/Login';
 import Registration from './Login/Registration';
-import SuccessForm from './Login/SampleForm';
-import SampleForm from './Login/SampleForm';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Category from './ShoppingCart/Category';
+import PlaceOrder from './ShoppingCart/PlaceOrder';
+import Product from './ShoppingCart/Product';
+import Cart from './ShoppingCart/Cart';
+import { useState } from 'react';
 
 function App() {
+  
   return (
     <div className="background-container">
-      <BrowserRouter>
+      <Router>
+        <NavigationBar />
         <Routes>
-          <Route exact path="/" element={<HomeComponent />} />
-          <Route path="/Registration" element={<Registration />}></Route>
-          {/* <Route path="/LoginComponent" element={<LoginComponent />}></Route> */}
-          <Route path="/SuccessForm" element={<SuccessForm />}></Route>
-
-          {/* <Route path="OrderDetails/:id" element={<OrderDetails />} />
-        <Route path="/DataComponent" element={<DataComponent />}></Route>
-        <Route path="/AddOrder" element={<AddOrder />}></Route> */}
+          <Route exact path="/" element={<LoginComponent/>} />
+          <Route path="/home" element={<HomeComponent />} />
+          <Route path="/login" element={<LoginComponent />} />
+          <Route path="/registration" element={<Registration/>} />
+          <Route path="/placeorder" element={<PlaceOrder />} />
+          <Route path="/category" element={<Category />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </div >
   );
 }

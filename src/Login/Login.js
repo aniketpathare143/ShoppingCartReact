@@ -1,78 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button, Form, Input, LabelDetail } from "semantic-ui-react";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Store/AuthContext';
+import axios from "axios";
 
-const LoginComponent = ({ onLogin, onSignUp }) => {
-    const [correct, setCorrect] = useState(false);
+const LoginComponent = () => {
+
+    const { login } = useAuth();
+
     const navigate = useNavigate();
-    const [loginData, setLoginData] = useState({ email: '', password: '' });    
-    const [loading, setLoading] = useState(false);
+    const [loginData, setLoginData] = useState({ email: '', password: '' });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setCorrect(true);
-                //console.log("correct");
-            } catch (error) {
-                console.error('Error fetching data:', error);
+    const handleLogin = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5087/api/login/${loginData.email}/${loginData.password}`);
+            console.log("UserId:" + response.data.userId);
+            if (response.data) {
+                login(response.data.firstName, response.data.userId);
+                navigate('/home');
             }
-        };
+            else {
+                alert('Invalid email or password');
+            }
+        } catch (error) {
 
-        fetchData();
-    }, [correct]);
-
-    const handleLogin = () => {
-       // console.log("u:" + loginData.email + "p:" + loginData.password);
-        // Assuming validation and authentication logic here
-        // For simplicity, just passing loginData to the onLogin function
-        // setLoading(true);
-        // setTimeout(() => {
-        //     setLoading(false);
-        // }, 3000)
-
-        // if (loginData.email === 'sai' && loginData.password === 'sai') {
-        //     onLogin(loginData);
-        // }
-
-        onLogin(loginData);
+        }
     };
 
     const handleSignUp = () => {
-        onSignUp();
+        navigate('/registration');
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setLoginData({ ...loginData, [name]: value });
-        // console.log(loginData)
     };
 
     return (
         <div class="page-login">
             <div class="ui centered grid container">
                 <div class="nine wide column">
-                    {
-                        loading &&
-                        <div class="ui icon warning message">
-                            <i class="lock icon"></i>
-                            {
-                                <div class="content">
-                                    <div class="header">
-                                        Login failed!
-                                    </div>
-                                    <p>You might have misspelled your username or password!</p>
-                                </div>
-                            }
-                        </div>
-                    }
-
-                    {loading && <div>Verifying please wait...</div>}
                     <div class="ui fluid card">
                         <div class="content">
                             <Form class="ui form" onSubmit={handleLogin}>
                                 <div class="field">
                                     <LabelDetail>Email</LabelDetail>
-                                    <Input type="text" name="email" value={loginData.email}  onChange={handleInputChange} placeholder="Email" />
+                                    <Input type="text" name="email" value={loginData.email} onChange={handleInputChange} placeholder="Email" />
                                 </div>
                                 <div class="field">
                                     <LabelDetail>Password</LabelDetail>

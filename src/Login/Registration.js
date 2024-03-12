@@ -1,9 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button, Message, FormField, Input, LabelDetail, Label } from 'semantic-ui-react';
+import { Form, Button, Message, FormField, Input } from 'semantic-ui-react';
+import { useAuth } from '../Store/AuthContext'
 
-const Registration = ({ onRegistration }) => {
+const Registration = () => {
+    const { login } = useAuth();
+
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
@@ -11,12 +14,11 @@ const Registration = ({ onRegistration }) => {
         email: '',
         password: '',
         confirmPassword: '',
-        dateOfBirth: '',
+        DOB: '',
         address: ''
     });
 
     const [errors, setErrors] = useState({});
-    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -44,8 +46,8 @@ const Registration = ({ onRegistration }) => {
         if (formData.password !== formData.confirmPassword) {
             newErrors.confirmPassword = 'Passwords do not match';
         }
-        if (!formData.dateOfBirth.trim()) {
-            newErrors.dateOfBirth = 'Date of Birth is required';
+        if (!formData.DOB.trim()) {
+            newErrors.DOB = 'Date of Birth is required';
         }
         if (!formData.address.trim()) {
             newErrors.address = 'Address is required';
@@ -54,17 +56,14 @@ const Registration = ({ onRegistration }) => {
 
         if (Object.keys(newErrors).length === 0) {
             try {
+                console.log("FormData:-" + formData.dateOfBirth);
                 const response = await axios.post('http://localhost:5087/api/login/register', formData);
                 console.log('User registered successfully:', response.data);
-                setIsSubmitted(true);
+                login(formData.firstName, response.data);
+                navigate('/home')
             } catch (error) {
-                console.error('Error adding user:', error);
-                // Handle error here
+                console.error('Error adding user:', error);                
             }
-            setIsSubmitted(true);
-            //console.log('Form submitted:', formData);
-            onRegistration(formData);
-            //navigate('/SuccessForm')
         }
     };
 
@@ -77,9 +76,6 @@ const Registration = ({ onRegistration }) => {
                 </h2>
                 <br></br>
             </div>
-            {
-                //redirect && <Link to='/DataComponent'></Link>
-            }
             <Form className="ui container form" onSubmit={handleSubmit} error={Object.keys(errors).length > 0}>
                 <FormField width={10}>
                     <label class="left-aligned-label">First Name:</label>
@@ -90,7 +86,7 @@ const Registration = ({ onRegistration }) => {
 
                 <FormField width={10}><label class="left-aligned-label">Email:</label><Input type="Text" name='email' value={formData.email} onChange={handleChange} error={errors.email}></Input><br></br></FormField>
 
-                <FormField width={3}><label class="left-aligned-label">Date Of Birth:</label><Input type="Date" name='dateOfBirth' value={formData.dateOfBirth} onChange={handleChange} error={errors.dateOfBirth}></Input><br></br></FormField>
+                <FormField width={3}><label class="left-aligned-label">Date Of Birth:</label><Input type="Date" name='DOB' value={formData.DOB} onChange={handleChange} error={errors.DOB}></Input><br></br></FormField>
 
                 <FormField width={10}><label class="left-aligned-label">Password:</label><Input type="Password" name='password' value={formData.password} onChange={handleChange} error={errors.password}></Input><br></br></FormField>
 
@@ -104,6 +100,7 @@ const Registration = ({ onRegistration }) => {
                     list={Object.values(errors)}
                 />
                 <Button floated='left' type="Submit" content="Submit" primary></Button>
+                <Link to='/login'><Button floated='left' type="Submit" content="Submit" primary>Back</Button></Link>
             </Form>
         </div>
     )

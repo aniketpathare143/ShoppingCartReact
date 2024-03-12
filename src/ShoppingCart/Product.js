@@ -2,48 +2,36 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Input, Label, Popup } from 'semantic-ui-react';
 import { useProductContext } from '../Store/ProductContext';
-
+import { useNavigate } from 'react-router-dom';
 
 const Product = (props) => {
+    const navigate = useNavigate();
     const [product, setProducts] = useState([]);
-    const { productCounts, incrementCount, decrementCount,setProductsInContext  } = useProductContext();
-    
+    const { productCounts, incrementCount, decrementCount } = useProductContext();
+
     const handleButtonClick = () => {
-        props.setButtonClicked(true); // Update the flag in the parent component
-        props.handleClick(); // Call the parent's function
-      };    
+        navigate('/cart');
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:5087/api/product/${props.catId}`);
                 setProducts(response.data);
-                //setProductsInContext(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        const fetchData1 = async () => {
-            try {
-                const response = await axios.get('http://localhost:5087/api/product');
-                //setProducts(response.data);
-                setProductsInContext(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
         fetchData();
-        fetchData1();
-    }, [props.catId, setProductsInContext]);
+    }, [props.catId]);
 
     return (
         <div>
-            <Button onClick={handleButtonClick} floated='right' className='facebook'>Go to Cart</Button>     
-                
-            {              
+            <Button style={{ marginTop: '10px' }} onClick={handleButtonClick} floated='right' className='facebook'>Go to Cart</Button>
+            {
                 product.map((item) => (
                     <div style={{ display: 'inline-block' }}>
-                        <div style={{ marginRight: '30px' }} class="ui card">
+                        <div style={{ marginRight: '40px' }} class="ui card">
                             <div class="image">
                                 <img src={'data:image/jpeg;base64,' + item.productImage}
                                     style={{ width: '290px', height: '150px' }} />

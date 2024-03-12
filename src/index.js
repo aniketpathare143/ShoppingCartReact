@@ -5,11 +5,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ProductProvider } from './Store/ProductContext';
+import { AuthProvider } from './Store/AuthContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ProductProvider>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </ProductProvider>
 );
 
