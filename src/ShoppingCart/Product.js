@@ -1,16 +1,21 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Button, Input, Label, Popup } from 'semantic-ui-react';
+import { Button, Input, Label, Popup, Rating } from 'semantic-ui-react';
 import { useProductContext } from '../Store/ProductContext';
 import { useNavigate } from 'react-router-dom';
 
 const Product = (props) => {
     const navigate = useNavigate();
     const [product, setProducts] = useState([]);
+    const [rating, setRating] = useState(0);
     const { productCounts, incrementCount, decrementCount } = useProductContext();
 
     const handleButtonClick = () => {
         navigate('/cart');
+    };
+
+    const handleRate = (e, { rating }) => {
+        setRating(rating);
     };
 
     useEffect(() => {
@@ -47,9 +52,10 @@ const Product = (props) => {
                                     }
                                 </div>
                                 <div class="description">
-                                    Available at Price {item.price}
+                                    Available at Price {item.price}                                   
                                 </div>
-                            </div>
+                                <div> <Rating icon='star' rating={rating} maxRating={5} onRate={handleRate} /> </div>
+                            </div>                                                      
                         </div>
                         <Popup position='bottom left'
                             content='Remove From Cart'
@@ -67,10 +73,11 @@ const Product = (props) => {
                                     <Button onClick={() => incrementCount(item.productId)} style={{ marginLeft: '13px' }} color='orange' disabled>+</Button>
                                     : <Button onClick={() => incrementCount(item.productId)} style={{ marginLeft: '13px' }} color='orange'>+</Button>
                             }
-                        />
+                        />                       
                     </div>
                 ))
-            }
+            }           
+            
         </div>
     )
 }

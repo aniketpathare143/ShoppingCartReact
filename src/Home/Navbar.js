@@ -9,7 +9,7 @@ const NavigationBar = () => {
         <div>
             <Menu inverted>
                 <Menu.Menu position='left'>
-                    <Menu.Item as='a'><Link to="/">Home</Link></Menu.Item>
+                    <Menu.Item as='a'><Link to="/home">Home</Link></Menu.Item>
                     <Menu.Item as='a'>Address</Menu.Item>
                     <Menu.Item as='a'>Contact</Menu.Item>
                 </Menu.Menu>
@@ -19,7 +19,7 @@ const NavigationBar = () => {
                         {isLoggedIn ? <Dropdown item text={`Welcome ${username}`}>
                             <Dropdown.Menu color='facebook'>
                                 <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
-                                <Dropdown.Item as={Link} to="/orders">Show my Orders</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/showorder">Show my Orders</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown> : (
                             <Link to="/login"><Button color='instagram'>Login</Button></Link>

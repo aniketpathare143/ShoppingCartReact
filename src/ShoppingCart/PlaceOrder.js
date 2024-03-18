@@ -5,33 +5,47 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Store/AuthContext';
 
 const PlaceOrder = () => {
-    const { productCounts, clearProductCounts } = useProductContext();
+
+    const { productCounts, clearProductCounts, products } = useProductContext();
     const { userId } = useAuth();
     const navigate = useNavigate();
-    console.log("UserId:" + userId);
 
-    // useEffect to update orderData whenever productCounts changes
+    const updatedPlacedOrders = () => {
+        console.log("In here")
+        const placedOrders = [];
+
+        // Convert productCounts object to an array of objects
+        for (const [productId, count] of Object.entries(productCounts)) {
+            const product = products.find(p => p.productId === productId);
+            console.log("Inside here")
+            // Push the new object into the placedOrders array
+            placedOrders.push({
+                placedQuantity: count,
+                categoryId: product.categoryId,
+                productId: productId
+            });
+        }
+
+        return placedOrders;
+    }
+
     useEffect(() => {
-        // Convert productCounts object to an array of objects with productId and count
-        const productCountsArray = Object.entries(productCounts).map(([productId, count]) => ({
-            ProductId: productId,
-            PlacedQuantity: count,
-            UserId: userId
-        }));
-
-        // Update orderData with the new array of products       
-        console.log(productCountsArray);
+        const ordersList = {
+            userId: userId,
+            placedOrders: updatedPlacedOrders()
+        };
         try {
-            const response = axios.post('http://localhost:5087/api/order', productCountsArray);
+            const response = axios.post('http://localhost:5087/api/order', ordersList);
             console.log(response);
             clearProductCounts();
             alert('Order placed successfully:');
             navigate('/home');
-        } catch (error) {
-            console.error('Error adding user:', error);
-        }
-    }, [productCounts]);
 
+        } catch (error) {
+            console.error('Error placing order:', error);
+        }
+
+    }, [productCounts])
 
     return (
         <div>

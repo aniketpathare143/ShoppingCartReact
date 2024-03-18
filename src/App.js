@@ -8,7 +8,7 @@ import Category from './ShoppingCart/Category';
 import PlaceOrder from './ShoppingCart/PlaceOrder';
 import Product from './ShoppingCart/Product';
 import Cart from './ShoppingCart/Cart';
-import { useState } from 'react';
+import ShowOrder from './ShoppingCart/ShowOrder';
 
 function App() {
   
@@ -25,6 +25,7 @@ function App() {
           <Route path="/category" element={<Category />} />
           <Route path="/product" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/showorder" element={<ShowOrder />} />
         </Routes>
       </Router>
     </div >
