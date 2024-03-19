@@ -20,6 +20,8 @@ const NavigationBar = () => {
                             <Dropdown.Menu color='facebook'>
                                 <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                                 <Dropdown.Item as={Link} to="/showorder">Show my Orders</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/addcategory">Add Category</Dropdown.Item>
+                                <Dropdown.Item as={Link} to="/addproduct">Add Product</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown> : (
                             <Link to="/login"><Button color='instagram'>Login</Button></Link>

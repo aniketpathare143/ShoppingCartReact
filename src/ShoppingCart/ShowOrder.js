@@ -56,7 +56,7 @@ const ShowOrder = () => {
     return (
         <div>
             {
-                isLoggedIn && (
+                isLoggedIn && orders.retrieveOrders !== null && (
                     <Accordion fluid styled style={{ marginBottom: '20px' }}>
                         {
                             orders.retrieveOrders.map((order, index) => (
@@ -68,8 +68,8 @@ const ShowOrder = () => {
                                         <Icon name='dropdown' />
                                         <div style={{ flexGrow: 1 }}>
                                             <div>
-                                                Order Number: {index + 1} <strong>&nbsp;&nbsp; &nbsp; 
-                                                    Total Products: {order.productPlacedCount} &nbsp;&nbsp; &nbsp; 
+                                                Order Number: {index + 1} <strong>&nbsp;&nbsp; &nbsp;
+                                                    Total Products: {order.productPlacedCount} &nbsp;&nbsp; &nbsp;
                                                     Placed on: {formatDateTime(order.placedAt)}</strong>
                                             </div>
                                         </div>
