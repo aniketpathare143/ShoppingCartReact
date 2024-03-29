@@ -40,13 +40,12 @@ const AddProduct = () => {
     };
 
     //here event param is necessary it won't get selected value without event param here
-    const handleDropDownChange = (event,data) => {      
+    const handleDropDownChange = (event, data) => {
         setSelectedCategory(data.value);
     };
 
-    const handleClick = () => {
-        try {
-            alert(selectedCategory);
+    const handleClick = async () => {
+        try {            
             const formDataWithImage = new FormData();
             formDataWithImage.append("ProductName", productData.ProductName);
             formDataWithImage.append("AvailableQuantity", productData.AvailableQuantity);
@@ -55,7 +54,7 @@ const AddProduct = () => {
             formDataWithImage.append("file", image);
             console.log(formDataWithImage);
 
-            const result = axios.post('http://localhost:5087/api/product', formDataWithImage, {
+            const result = await axios.post('http://localhost:5087/api/product', formDataWithImage, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -73,13 +72,16 @@ const AddProduct = () => {
     };
 
     return (
-        < div className='ui container' style={{ marginTop: '50px' }}>
-            <div class="ui container">
-                <h2 class="left-aligned-label" >
-                    Add New Product
-                </h2>
-                <br></br>
-            </div>
+        <div className='ui container' style={{ marginTop: '50px' }}>
+            {
+                isLoggedIn &&
+                <div class="ui container">
+                    <h2 class="left-aligned-label" >
+                        Add New Product 
+                    </h2>
+                    <br></br>
+                </div>
+            }
             {
                 isLoggedIn &&
                 <Form className='ui container form' onSubmit={handleClick}>
@@ -88,6 +90,7 @@ const AddProduct = () => {
                         <Input type='text' name='ProductName' onChange={handleChange} value={productData.ProductName}></Input>
                     </FormField>
                     <Dropdown placeholder='Select Category'
+                        icon='angle down'
                         fluid
                         selection
                         options={

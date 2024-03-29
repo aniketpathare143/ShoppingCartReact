@@ -20,6 +20,10 @@ const Cart = () => {
     };
 
     const handlePlaceOrder = () => {
+        if (Object.keys(productCounts).length === 0) {
+            alert('Please select atleast one order to place.')
+            return;
+        }
         navigate('/placeorder');
     }
 

@@ -11,13 +11,13 @@ const AddCategory = () => {
     const navigate = useNavigate();
     const { isLoggedIn } = useAuth();
 
-    const handleClick = () => {
+    const handleClick = async () => {
         try {
             const formDataWithImage = new FormData();
             formDataWithImage.append("CategoryName", categoryName);
             formDataWithImage.append("file", image);
 
-            const result = axios.post('http://localhost:5087/api/category', formDataWithImage, {
+            const result = await axios.post('http://localhost:5087/api/category', formDataWithImage, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -36,12 +36,15 @@ const AddCategory = () => {
 
     return (
         < div className='ui container' style={{ marginTop: '50px' }}>
-            <div class="ui container">
-                <h2 class="left-aligned-label" >
-                    Add New Category
-                </h2>
-                <br></br>
-            </div>
+            {
+                isLoggedIn &&
+                <div class="ui container">
+                    <h2 class="left-aligned-label" >
+                        Add New Category 
+                    </h2>
+                    <br></br>
+                </div>
+            }
             {
                 isLoggedIn &&
                 <Form className='ui container form' onSubmit={handleClick}>
